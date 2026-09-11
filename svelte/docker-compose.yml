@@ -1,0 +1,26 @@
+networks:
+  app-network:  
+    driver: bridge
+services:
+  app:
+    image: node:22-alpine
+    container_name: vite_app_svelte
+    # Mantém o container rodando
+    tty: true
+  # Mapeia a porta 5173 do container para o seu computador (host:container)
+    ports:
+      - "12008:5173"
+    # Espelha a pasta atual (./) para dentro do container (/app)
+    volumes:
+      - ./:/app
+    # Define o diretório de trabalho
+    working_dir: /app
+    # Comando que roda quando o container inicia (modo de desenvolvimento)
+    command: sh -c "npm install && npm run dev"
+    # Define as variáveis de ambiente necessárias
+    environment:
+      - NODE_ENV=development
+      - PORT=5173
+      - HOST=0.0.0.0
+    networks:
+      - app-network 
