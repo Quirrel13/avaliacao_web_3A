@@ -1,21 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ClienteApiController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\CursoController;
-use App\Http\Controllers\DisciplinaController;
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    // Cursos
-    Route::apiResource('cursos', CursoController::class);
-    // Disciplinas
-    Route::apiResource('disciplinas', DisciplinaController::class);
+Route::middleware(['auth:sanctum'])->prefix('v1/cliente')->group(function () {
+    Route::get('/dashboard', [ClienteApiController::class, 'dashboard']);
+    Route::post('/pix', [ClienteApiController::class, 'realizarPix']);
+    Route::post('/investimentos/aplicar', [ClienteApiController::class, 'aplicar']);
+    Route::post('/investimentos/resgatar', [ClienteApiController::class, 'resgatar']);
 });

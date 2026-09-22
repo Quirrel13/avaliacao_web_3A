@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\AuthenticationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -29,10 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Registra o Evento de Autenticação - Permissão
-        event(new AuthenticationEvent(Auth::user()->role_id));
-
-        return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

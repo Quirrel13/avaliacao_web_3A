@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\AuthenticationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -47,9 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Registra o Evento de Autenticação - Permissão
-        event(new AuthenticationEvent(Auth::user()->role_id));
-
-        return redirect(route('home', absolute: false));
+        return redirect(route('dashboard', absolute: false));
     }
 }

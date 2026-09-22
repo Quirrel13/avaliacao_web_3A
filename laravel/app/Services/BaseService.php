@@ -2,35 +2,39 @@
 
 namespace App\Services;
 
-abstract class BaseService {
+use App\Repositories\BaseRepository;
 
-    abstract protected function getRepository(): mixed;
+abstract class BaseService
+{
+    abstract public function getRepository(): BaseRepository;
 
-    public function all(array $arrWith = [], array $where = [], string $orderBy = 'id') {
-        return $this->getRepository()->list($arrWith, $where, $orderBy);
+    public function all()
+    {
+        return $this->getRepository()->all();
     }
 
-    public function allPaginate(array $arrWith = [], array $where = [], string $orderBy = 'id', int $limit = 6) {
-        return $this->getRepository()->listPaginate($arrWith, $where, $orderBy, $limit);
+    public function find(int|string $id)
+    {
+        return $this->getRepository()->find($id);
     }
 
-    public function find(int|string $id, array $with = []) {
-        return $this->getRepository()->find($id, $with);
+    public function create(array $data)
+    {
+        return $this->getRepository()->create($data);
     }
 
-    public function store(array $data) {
-        return $this->getRepository()->store($data);
+    public function update(int|string $id, array $data)
+    {
+        return $this->getRepository()->update($id, $data);
     }
 
-    public function update(array $data, int|string $id) {
-        return $this->getRepository()->update($data, $id);
+    public function delete(int|string $id)
+    {
+        return $this->getRepository()->delete($id);
     }
 
-    public function remove(int|string $id) {
-        return $this->getRepository()->remove($id);
-    }
-
-    public function audit(int|string $id) {
+    public function audit(int|string $id)
+    {
         return $this->getRepository()->audit($id);
     }
 }

@@ -2,27 +2,30 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // Linha Adicionada
+use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-#[Fillable(['name', 'email', 'password', 'role_id'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements Auditable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens; // Linha Alterada
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, AuditableTrait;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role_id',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -31,7 +34,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function role() {
-        return $this->belongsTo('\App\Models\Role');
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function conta()
+    {
+        return $this->hasOne(Conta::class, 'usuario_id');
     }
 }

@@ -9,11 +9,15 @@ export default defineConfig({
         }),
     ],
     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        cors: {
+            origin: ['http://localhost:15000'],
+        },
         hmr: {
             host: 'localhost',
         },
-        watch: {
-            usePolling: true, // Garante que o Vite perceba mudanças de arquivos no Docker (Windows/WSL)
-        },
+        origin: 'http://localhost:5173',
     },
 });
